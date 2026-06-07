@@ -17,7 +17,7 @@ function getAudioOptions(src: string): AudioOption[] {
   if (hasSub && hasDub) return ["sub", "dub"];
   if (hasDub) return ["dub"];
   if (hasSub) return ["sub"];
-  return ["sub", "dub"];
+  return [];
 }
 
 function audioLabel(audio: AudioOption) {
@@ -54,7 +54,6 @@ function WatchPage() {
     if (!current?.src) return [];
     return getAudioOptions(current.src);
   }, [current]);
-  const hasAudioChoice = availableAudio.length > 1;
 
   useEffect(() => {
     if (!availableAudio.length) return;
@@ -113,33 +112,37 @@ function WatchPage() {
     <Layout>
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div>
-          {!!current && !!availableAudio.length && (
+          {!!current && (
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-secondary/40 px-3 py-2">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Audio</span>
                 <span>
-                  Available: {availableAudio.length > 1
-                    ? "Sub & Dub"
-                    : `${audioLabel(availableAudio[0])} only`}
+                  {availableAudio.length > 1
+                    ? "Available: Sub & Dub"
+                    : availableAudio.length === 1
+                      ? `Available: ${audioLabel(availableAudio[0])} only`
+                      : "Availability not provided by source"}
                 </span>
                 {activeAudio && <span>• Playing: {audioLabel(activeAudio)}</span>}
               </div>
 
-              <div className="inline-flex overflow-hidden rounded-md border border-border">
-                {availableAudio.map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => setAudio(option)}
-                    className={`px-4 py-1.5 text-sm font-semibold ${
-                      activeAudio === option
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-secondary hover:bg-secondary/70"
-                    }`}
-                  >
-                    {option.toUpperCase()}
-                  </button>
-                ))}
-              </div>
+              {!!availableAudio.length && (
+                <div className="inline-flex overflow-hidden rounded-md border border-border">
+                  {availableAudio.map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => setAudio(option)}
+                      className={`px-4 py-1.5 text-sm font-semibold ${
+                        activeAudio === option
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-secondary hover:bg-secondary/70"
+                      }`}
+                    >
+                      {option.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
           <div className="relative aspect-video w-full overflow-hidden rounded-md bg-black">
