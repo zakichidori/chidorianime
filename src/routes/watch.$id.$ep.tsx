@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { getAnimeInfo } from "@/lib/anime";
@@ -16,6 +16,7 @@ function WatchPage() {
   const epNum = Math.max(1, parseInt(ep, 10) || 1);
   const navigate = useNavigate();
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [audio, setAudio] = useState<"sub" | "dub">("sub");
 
   const { data: info } = useQuery({
     queryKey: ["info", id],
@@ -32,6 +33,12 @@ function WatchPage() {
   const record = useLibrary((s) => s.recordWatch);
 
   const current = streams?.episodes.find((e) => e.number === epNum);
+  // Stream URLs include a type=sub|dub query param; we toggle it.
+  const hasAudioParam = !!current && /type=(sub|dub)/i.test(current.src);
+  const playSrc = useMemo(() => {
+    if (!current) return "";
+    return current.src.replace(/type=(sub|dub)/i, `type=${audio}`);
+  }, [current, audio]);
   const total = streams?.episodes.length ?? info?.epCount ?? epNum;
   const hasPrev = epNum > 1;
   const hasNext = epNum < total;
@@ -76,9 +83,9 @@ function WatchPage() {
               </div>
             ) : current ? (
               <iframe
-                key={current.src}
+                key={playSrc}
                 ref={iframeRef}
-                src={current.src}
+                src={playSrc}
                 className="h-full w-full border-0"
                 allowFullScreen
                 referrerPolicy="no-referrer"
@@ -106,6 +113,30 @@ function WatchPage() {
               <h1 className="text-xl font-semibold">Episode {epNum}</h1>
             </div>
             <div className="flex items-center gap-2">
+              {hasAudioParam && (
+                <div className="mr-2 inline-flex overflow-hidden rounded-md border border-border">
+                  <button
+                    onClick={() => setAudio("sub")}
+                    className={`px-3 py-2 text-sm font-medium ${
+                      audio === "sub"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary hover:bg-secondary/70"
+                    }`}
+                  >
+                    SUB
+                  </button>
+                  <button
+                    onClick={() => setAudio("dub")}
+                    className={`px-3 py-2 text-sm font-medium ${
+                      audio === "dub"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary hover:bg-secondary/70"
+                    }`}
+                  >
+                    DUB
+                  </button>
+                </div>
+              )}
               <button
                 disabled={!hasPrev}
                 onClick={() =>
