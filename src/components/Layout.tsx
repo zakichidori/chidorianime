@@ -1,27 +1,28 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { Home, Search, Bookmark, History } from "lucide-react";
+import { Home, Search, Bookmark, History, Info } from "lucide-react";
 import { type ReactNode, useState } from "react";
-import sasukeLogo from "@/assets/sasuke-chibi.png";
+import narutoLogo from "@/assets/naruto-chibi.png";
 
 const navItems = [
   { to: "/", label: "Home", icon: Home },
   { to: "/search", label: "Search", icon: Search },
   { to: "/bookmarks", label: "Bookmarks", icon: Bookmark },
   { to: "/history", label: "History", icon: History },
+  { to: "/info", label: "Info", icon: Info },
 ] as const;
 
 function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2">
       <img
-        src={sasukeLogo}
-        alt="ZakiChidori Anime"
+        src={narutoLogo}
+        alt="Zaki Anime"
         width={32}
         height={32}
         className="h-8 w-8 object-contain"
       />
-      <span className="whitespace-nowrap text-base font-bold tracking-tight">
-        ZakiChidori Anime
+      <span className="whitespace-nowrap text-lg font-bold tracking-tight">
+        Zaki Anime
       </span>
     </Link>
   );
