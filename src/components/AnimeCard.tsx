@@ -16,7 +16,9 @@ export function AnimeCard({ a }: { a: NormalizedCard }) {
             src={a.image}
             alt={a.name}
             loading="lazy"
-            className="h-full w-full object-cover transition-opacity group-hover:opacity-90"
+            decoding="async"
+            referrerPolicy="no-referrer"
+            className="h-full w-full object-cover"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">

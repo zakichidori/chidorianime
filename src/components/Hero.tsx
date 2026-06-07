@@ -10,6 +10,8 @@ export function Hero({ anime }: { anime: AnimeInfo }) {
           <img
             src={anime.Cover}
             alt={anime.Name}
+            referrerPolicy="no-referrer"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
           />
         )}

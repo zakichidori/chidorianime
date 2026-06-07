@@ -76,10 +76,13 @@ function WatchPage() {
               </div>
             ) : current ? (
               <iframe
+                key={current.src}
                 ref={iframeRef}
                 src={current.src}
-                className="h-full w-full"
+                className="h-full w-full border-0"
                 allowFullScreen
+                referrerPolicy="no-referrer"
+                loading="eager"
                 allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
               />
             ) : (
