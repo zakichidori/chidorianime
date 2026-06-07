@@ -20,7 +20,9 @@ function Logo() {
         height={32}
         className="h-8 w-8 object-contain"
       />
-      <span className="text-lg font-bold tracking-tight">ZakiChidori Anime</span>
+      <span className="whitespace-nowrap text-base font-bold tracking-tight">
+        ZakiChidori Anime
+      </span>
     </Link>
   );
 }
