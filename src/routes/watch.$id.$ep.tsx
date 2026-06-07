@@ -34,10 +34,14 @@ function WatchPage() {
 
   const current = streams?.episodes.find((e) => e.number === epNum);
   // Stream URLs include a type=sub|dub query param; we toggle it.
-  const hasAudioParam = !!current && /type=(sub|dub)/i.test(current.src);
+  const hasAudioParam = !!current;
   const playSrc = useMemo(() => {
     if (!current) return "";
-    return current.src.replace(/type=(sub|dub)/i, `type=${audio}`);
+    if (/type=(sub|dub)/i.test(current.src)) {
+      return current.src.replace(/type=(sub|dub)/i, `type=${audio}`);
+    }
+    const sep = current.src.includes("?") ? "&" : "?";
+    return `${current.src}${sep}type=${audio}`;
   }, [current, audio]);
   const total = streams?.episodes.length ?? info?.epCount ?? epNum;
   const hasPrev = epNum > 1;
