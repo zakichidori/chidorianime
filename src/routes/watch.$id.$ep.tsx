@@ -33,9 +33,8 @@ function WatchPage() {
   const record = useLibrary((s) => s.recordWatch);
 
   const current = streams?.episodes.find((e) => e.number === epNum);
-  const hasSub = !!current && /type=sub/i.test(current.src);
-  const hasDub = !!current && /type=(sub|dub)/i.test(current.src);
-  // Stream URLs include type=sub; swap to dub when user toggles.
+  // Stream URLs include a type=sub|dub query param; we toggle it.
+  const hasAudioParam = !!current && /type=(sub|dub)/i.test(current.src);
   const playSrc = useMemo(() => {
     if (!current) return "";
     return current.src.replace(/type=(sub|dub)/i, `type=${audio}`);
@@ -114,11 +113,10 @@ function WatchPage() {
               <h1 className="text-xl font-semibold">Episode {epNum}</h1>
             </div>
             <div className="flex items-center gap-2">
-              {hasDub && (
+              {hasAudioParam && (
                 <div className="mr-2 inline-flex overflow-hidden rounded-md border border-border">
                   <button
                     onClick={() => setAudio("sub")}
-                    disabled={!hasSub}
                     className={`px-3 py-2 text-sm font-medium ${
                       audio === "sub"
                         ? "bg-primary text-primary-foreground"
