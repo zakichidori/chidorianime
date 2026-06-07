@@ -34,7 +34,7 @@ function WatchPage() {
 
   const current = streams?.episodes.find((e) => e.number === epNum);
   // Stream URLs include a type=sub|dub query param; we toggle it.
-  const hasAudioParam = !!current && /type=(sub|dub)/i.test(current.src);
+  const hasAudioParam = !!current;
   const playSrc = useMemo(() => {
     if (!current) return "";
     return current.src.replace(/type=(sub|dub)/i, `type=${audio}`);
