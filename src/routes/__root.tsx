@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "chidori" },
+      { name: "description", content: "made by chidori have fun" },
       { name: "author", content: "Chidori" },
-      { property: "og:title", content: "Chidori Anime" },
-      { property: "og:description", content: "Stream anime — Chidori Anime" },
+      { property: "og:title", content: "chidori" },
+      { property: "og:description", content: "made by chidori have fun" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Chidori" },
+      { name: "twitter:title", content: "chidori" },
+      { name: "twitter:description", content: "made by chidori have fun" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ytAgo0prISYtuYAhrZ4hiv4lVUR2/social-images/social-1780863327435-wallhaven-39eew9.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ytAgo0prISYtuYAhrZ4hiv4lVUR2/social-images/social-1780863327435-wallhaven-39eew9.webp" },
     ],
     links: [
       {
