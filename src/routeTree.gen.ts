@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as InfoRouteImport } from './routes/info'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as BookmarksRouteImport } from './routes/bookmarks'
 import { Route as IndexRouteImport } from './routes/index'
@@ -20,6 +21,11 @@ import { Route as ApiProxySplatRouteImport } from './routes/api/proxy.$'
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfoRoute = InfoRouteImport.update({
+  id: '/info',
+  path: '/info',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoryRoute = HistoryRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bookmarks': typeof BookmarksRoute
   '/history': typeof HistoryRoute
+  '/info': typeof InfoRoute
   '/search': typeof SearchRoute
   '/anime/$id': typeof AnimeIdRoute
   '/api/proxy/$': typeof ApiProxySplatRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bookmarks': typeof BookmarksRoute
   '/history': typeof HistoryRoute
+  '/info': typeof InfoRoute
   '/search': typeof SearchRoute
   '/anime/$id': typeof AnimeIdRoute
   '/api/proxy/$': typeof ApiProxySplatRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/bookmarks': typeof BookmarksRoute
   '/history': typeof HistoryRoute
+  '/info': typeof InfoRoute
   '/search': typeof SearchRoute
   '/anime/$id': typeof AnimeIdRoute
   '/api/proxy/$': typeof ApiProxySplatRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bookmarks'
     | '/history'
+    | '/info'
     | '/search'
     | '/anime/$id'
     | '/api/proxy/$'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bookmarks'
     | '/history'
+    | '/info'
     | '/search'
     | '/anime/$id'
     | '/api/proxy/$'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bookmarks'
     | '/history'
+    | '/info'
     | '/search'
     | '/anime/$id'
     | '/api/proxy/$'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BookmarksRoute: typeof BookmarksRoute
   HistoryRoute: typeof HistoryRoute
+  InfoRoute: typeof InfoRoute
   SearchRoute: typeof SearchRoute
   AnimeIdRoute: typeof AnimeIdRoute
   ApiProxySplatRoute: typeof ApiProxySplatRoute
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/info': {
+      id: '/info'
+      path: '/info'
+      fullPath: '/info'
+      preLoaderRoute: typeof InfoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/history': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BookmarksRoute: BookmarksRoute,
   HistoryRoute: HistoryRoute,
+  InfoRoute: InfoRoute,
   SearchRoute: SearchRoute,
   AnimeIdRoute: AnimeIdRoute,
   ApiProxySplatRoute: ApiProxySplatRoute,
