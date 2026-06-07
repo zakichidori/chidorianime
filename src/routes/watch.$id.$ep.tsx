@@ -7,6 +7,23 @@ import { getAnimeInfo } from "@/lib/anime";
 import { getEpisodes } from "@/lib/watch";
 import { useLibrary } from "@/lib/store";
 
+type AudioOption = "sub" | "dub";
+
+function getAudioOptions(src: string): AudioOption[] {
+  const normalized = src.toLowerCase();
+  const hasDub = /([?&]type=dub\b|\/dub\b)/i.test(normalized);
+  const hasSub = /([?&]type=sub\b|\/sub\b)/i.test(normalized);
+
+  if (hasSub && hasDub) return ["sub", "dub"];
+  if (hasDub) return ["dub"];
+  if (hasSub) return ["sub"];
+  return ["sub", "dub"];
+}
+
+function audioLabel(audio: AudioOption) {
+  return audio === "dub" ? "Dub" : "Sub";
+}
+
 export const Route = createFileRoute("/watch/$id/$ep")({
   component: WatchPage,
 });
@@ -33,16 +50,32 @@ function WatchPage() {
   const record = useLibrary((s) => s.recordWatch);
 
   const current = streams?.episodes.find((e) => e.number === epNum);
-  // Stream URLs include a type=sub|dub query param; we toggle it.
-  const hasAudioParam = !!current;
+  const availableAudio = useMemo<AudioOption[]>(() => {
+    if (!current?.src) return [];
+    return getAudioOptions(current.src);
+  }, [current]);
+  const hasAudioChoice = availableAudio.length > 1;
+
+  useEffect(() => {
+    if (!availableAudio.length) return;
+    if (!availableAudio.includes(audio)) {
+      setAudio(availableAudio[0]);
+    }
+  }, [audio, availableAudio]);
+
   const playSrc = useMemo(() => {
     if (!current) return "";
+    if (!availableAudio.includes(audio)) {
+      return current.src;
+    }
     if (/type=(sub|dub)/i.test(current.src)) {
       return current.src.replace(/type=(sub|dub)/i, `type=${audio}`);
     }
     const sep = current.src.includes("?") ? "&" : "?";
     return `${current.src}${sep}type=${audio}`;
-  }, [current, audio]);
+  }, [current, audio, availableAudio]);
+
+  const activeAudio = availableAudio.includes(audio) ? audio : availableAudio[0];
   const total = streams?.episodes.length ?? info?.epCount ?? epNum;
   const hasPrev = epNum > 1;
   const hasNext = epNum < total;
@@ -80,32 +113,32 @@ function WatchPage() {
     <Layout>
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div>
-          {hasAudioParam && (
-            <div className="mb-2 flex items-center justify-end gap-2">
-              <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                Audio
-              </span>
+          {!!current && !!availableAudio.length && (
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-secondary/40 px-3 py-2">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span className="font-medium text-foreground">Audio</span>
+                <span>
+                  Available: {availableAudio.length > 1
+                    ? "Sub & Dub"
+                    : `${audioLabel(availableAudio[0])} only`}
+                </span>
+                {activeAudio && <span>• Playing: {audioLabel(activeAudio)}</span>}
+              </div>
+
               <div className="inline-flex overflow-hidden rounded-md border border-border">
-                <button
-                  onClick={() => setAudio("sub")}
-                  className={`px-4 py-1.5 text-sm font-semibold ${
-                    audio === "sub"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary hover:bg-secondary/70"
-                  }`}
-                >
-                  SUB
-                </button>
-                <button
-                  onClick={() => setAudio("dub")}
-                  className={`px-4 py-1.5 text-sm font-semibold ${
-                    audio === "dub"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary hover:bg-secondary/70"
-                  }`}
-                >
-                  DUB
-                </button>
+                {availableAudio.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setAudio(option)}
+                    className={`px-4 py-1.5 text-sm font-semibold ${
+                      activeAudio === option
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary hover:bg-secondary/70"
+                    }`}
+                  >
+                    {option.toUpperCase()}
+                  </button>
+                ))}
               </div>
             </div>
           )}
