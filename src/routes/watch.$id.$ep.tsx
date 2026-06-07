@@ -76,6 +76,35 @@ function WatchPage() {
     <Layout>
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div>
+          {hasAudioParam && (
+            <div className="mb-2 flex items-center justify-end gap-2">
+              <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                Audio
+              </span>
+              <div className="inline-flex overflow-hidden rounded-md border border-border">
+                <button
+                  onClick={() => setAudio("sub")}
+                  className={`px-4 py-1.5 text-sm font-semibold ${
+                    audio === "sub"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary hover:bg-secondary/70"
+                  }`}
+                >
+                  SUB
+                </button>
+                <button
+                  onClick={() => setAudio("dub")}
+                  className={`px-4 py-1.5 text-sm font-semibold ${
+                    audio === "dub"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary hover:bg-secondary/70"
+                  }`}
+                >
+                  DUB
+                </button>
+              </div>
+            </div>
+          )}
           <div className="relative aspect-video w-full overflow-hidden rounded-md bg-black">
             {isLoading ? (
               <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
@@ -113,30 +142,6 @@ function WatchPage() {
               <h1 className="text-xl font-semibold">Episode {epNum}</h1>
             </div>
             <div className="flex items-center gap-2">
-              {hasAudioParam && (
-                <div className="mr-2 inline-flex overflow-hidden rounded-md border border-border">
-                  <button
-                    onClick={() => setAudio("sub")}
-                    className={`px-3 py-2 text-sm font-medium ${
-                      audio === "sub"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-secondary hover:bg-secondary/70"
-                    }`}
-                  >
-                    SUB
-                  </button>
-                  <button
-                    onClick={() => setAudio("dub")}
-                    className={`px-3 py-2 text-sm font-medium ${
-                      audio === "dub"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-secondary hover:bg-secondary/70"
-                    }`}
-                  >
-                    DUB
-                  </button>
-                </div>
-              )}
               <button
                 disabled={!hasPrev}
                 onClick={() =>
