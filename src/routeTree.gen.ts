@@ -15,6 +15,7 @@ import { Route as BookmarksRouteImport } from './routes/bookmarks'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnimeIdRouteImport } from './routes/anime.$id'
 import { Route as WatchIdEpRouteImport } from './routes/watch.$id.$ep'
+import { Route as ApiProxySplatRouteImport } from './routes/api/proxy.$'
 
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
@@ -46,6 +47,11 @@ const WatchIdEpRoute = WatchIdEpRouteImport.update({
   path: '/watch/$id/$ep',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiProxySplatRoute = ApiProxySplatRouteImport.update({
+  id: '/api/proxy/$',
+  path: '/api/proxy/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/history': typeof HistoryRoute
   '/search': typeof SearchRoute
   '/anime/$id': typeof AnimeIdRoute
+  '/api/proxy/$': typeof ApiProxySplatRoute
   '/watch/$id/$ep': typeof WatchIdEpRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/history': typeof HistoryRoute
   '/search': typeof SearchRoute
   '/anime/$id': typeof AnimeIdRoute
+  '/api/proxy/$': typeof ApiProxySplatRoute
   '/watch/$id/$ep': typeof WatchIdEpRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/history': typeof HistoryRoute
   '/search': typeof SearchRoute
   '/anime/$id': typeof AnimeIdRoute
+  '/api/proxy/$': typeof ApiProxySplatRoute
   '/watch/$id/$ep': typeof WatchIdEpRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/search'
     | '/anime/$id'
+    | '/api/proxy/$'
     | '/watch/$id/$ep'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/search'
     | '/anime/$id'
+    | '/api/proxy/$'
     | '/watch/$id/$ep'
   id:
     | '__root__'
@@ -96,6 +107,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/search'
     | '/anime/$id'
+    | '/api/proxy/$'
     | '/watch/$id/$ep'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +117,7 @@ export interface RootRouteChildren {
   HistoryRoute: typeof HistoryRoute
   SearchRoute: typeof SearchRoute
   AnimeIdRoute: typeof AnimeIdRoute
+  ApiProxySplatRoute: typeof ApiProxySplatRoute
   WatchIdEpRoute: typeof WatchIdEpRoute
 }
 
@@ -152,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WatchIdEpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/proxy/$': {
+      id: '/api/proxy/$'
+      path: '/api/proxy/$'
+      fullPath: '/api/proxy/$'
+      preLoaderRoute: typeof ApiProxySplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -161,8 +181,19 @@ const rootRouteChildren: RootRouteChildren = {
   HistoryRoute: HistoryRoute,
   SearchRoute: SearchRoute,
   AnimeIdRoute: AnimeIdRoute,
+  ApiProxySplatRoute: ApiProxySplatRoute,
   WatchIdEpRoute: WatchIdEpRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
