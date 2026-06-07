@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as BookmarksRouteImport } from './routes/bookmarks'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnimeIdRouteImport } from './routes/anime.$id'
 import { Route as WatchIdEpRouteImport } from './routes/watch.$id.$ep'
@@ -17,6 +18,11 @@ import { Route as WatchIdEpRouteImport } from './routes/watch.$id.$ep'
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookmarksRoute = BookmarksRouteImport.update({
+  id: '/bookmarks',
+  path: '/bookmarks',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,12 +43,14 @@ const WatchIdEpRoute = WatchIdEpRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bookmarks': typeof BookmarksRoute
   '/search': typeof SearchRoute
   '/anime/$id': typeof AnimeIdRoute
   '/watch/$id/$ep': typeof WatchIdEpRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bookmarks': typeof BookmarksRoute
   '/search': typeof SearchRoute
   '/anime/$id': typeof AnimeIdRoute
   '/watch/$id/$ep': typeof WatchIdEpRoute
@@ -50,20 +58,28 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bookmarks': typeof BookmarksRoute
   '/search': typeof SearchRoute
   '/anime/$id': typeof AnimeIdRoute
   '/watch/$id/$ep': typeof WatchIdEpRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/search' | '/anime/$id' | '/watch/$id/$ep'
+  fullPaths: '/' | '/bookmarks' | '/search' | '/anime/$id' | '/watch/$id/$ep'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/search' | '/anime/$id' | '/watch/$id/$ep'
-  id: '__root__' | '/' | '/search' | '/anime/$id' | '/watch/$id/$ep'
+  to: '/' | '/bookmarks' | '/search' | '/anime/$id' | '/watch/$id/$ep'
+  id:
+    | '__root__'
+    | '/'
+    | '/bookmarks'
+    | '/search'
+    | '/anime/$id'
+    | '/watch/$id/$ep'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BookmarksRoute: typeof BookmarksRoute
   SearchRoute: typeof SearchRoute
   AnimeIdRoute: typeof AnimeIdRoute
   WatchIdEpRoute: typeof WatchIdEpRoute
@@ -76,6 +92,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookmarks': {
+      id: '/bookmarks'
+      path: '/bookmarks'
+      fullPath: '/bookmarks'
+      preLoaderRoute: typeof BookmarksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -104,6 +127,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BookmarksRoute: BookmarksRoute,
   SearchRoute: SearchRoute,
   AnimeIdRoute: AnimeIdRoute,
   WatchIdEpRoute: WatchIdEpRoute,
