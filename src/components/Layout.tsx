@@ -11,6 +11,11 @@ const navItems = [
   { to: "/info", label: "Info", icon: Info },
 ] as const;
 
+const GENRES = [
+  "action", "adventure", "comedy", "drama", "fantasy",
+  "romance", "sci-fi", "slice of life", "sports", "supernatural", "thriller",
+];
+
 function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2">
@@ -93,7 +98,39 @@ export function Layout({ children }: { children: ReactNode }) {
           </div>
         </header>
 
+        <div className="scrollbar-hide -mb-2 flex gap-2 overflow-x-auto border-b border-border bg-background/60 px-4 py-2 md:px-8">
+          {GENRES.map((g) => (
+            <Link
+              key={g}
+              to="/search"
+              search={{ genre: g } as any}
+              className="whitespace-nowrap rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs capitalize text-muted-foreground hover:border-primary hover:text-primary"
+            >
+              {g}
+            </Link>
+          ))}
+        </div>
+
         <main className="px-4 pb-24 pt-6 md:px-8 md:pb-10">{children}</main>
+
+        <footer className="mt-12 border-t border-border bg-sidebar/40 px-4 py-8 md:px-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-sm font-semibold">Zaki Anime</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Stream anime in HD · Sub & Dub · No ads on us
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
+              <Link to="/" className="hover:text-primary">Home</Link>
+              <Link to="/search" className="hover:text-primary">Browse</Link>
+              <Link to="/bookmarks" className="hover:text-primary">My List</Link>
+              <Link to="/history" className="hover:text-primary">Continue Watching</Link>
+              <Link to="/info" className="hover:text-primary">About</Link>
+            </div>
+            <p className="text-xs text-muted-foreground">© 2026 zakichidori</p>
+          </div>
+        </footer>
       </div>
 
       <nav className="fixed inset-x-0 bottom-0 z-30 flex border-t border-border bg-sidebar md:hidden">
