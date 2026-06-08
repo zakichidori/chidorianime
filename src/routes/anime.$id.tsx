@@ -46,15 +46,18 @@ function AnimeDetailsPage() {
   return (
     <Layout>
       <div className="relative -mx-4 mb-8 md:-mx-8">
-        <div className="relative aspect-[21/9] max-h-[360px] w-full overflow-hidden">
+        <div className="relative aspect-[21/9] max-h-[420px] w-full overflow-hidden">
           {info.Cover && (
             <img
               src={info.Cover}
               alt=""
-              className="absolute inset-0 h-full w-full object-cover opacity-50"
+              referrerPolicy="no-referrer"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-background to-background/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/20 to-transparent" />
         </div>
       </div>
 
