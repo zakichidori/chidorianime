@@ -64,14 +64,20 @@ function WatchPage() {
 
   const playSrc = useMemo(() => {
     if (!current) return "";
-    if (!availableAudio.includes(audio)) {
-      return current.src;
+    let url = current.src;
+    if (availableAudio.includes(audio)) {
+      if (/type=(sub|dub)/i.test(url)) {
+        url = url.replace(/type=(sub|dub)/i, `type=${audio}`);
+      } else {
+        url += (url.includes("?") ? "&" : "?") + `type=${audio}`;
+      }
     }
-    if (/type=(sub|dub)/i.test(current.src)) {
-      return current.src.replace(/type=(sub|dub)/i, `type=${audio}`);
-    }
-    const sep = current.src.includes("?") ? "&" : "?";
-    return `${current.src}${sep}type=${audio}`;
+    // Hint embedded players to use the highest available quality.
+    const sep = url.includes("?") ? "&" : "?";
+    if (!/[?&]quality=/i.test(url)) url += `${sep}quality=1080`;
+    if (!/[?&]autoQuality=/i.test(url)) url += `&autoQuality=1`;
+    if (!/[?&]hd=/i.test(url)) url += `&hd=1`;
+    return url;
   }, [current, audio, availableAudio]);
 
   const activeAudio = availableAudio.includes(audio) ? audio : availableAudio[0];
