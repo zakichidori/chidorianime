@@ -120,7 +120,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <footer className="mt-12 border-t border-border bg-sidebar/40 px-4 py-8 md:px-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-sm font-semibold">Zaki Anime</p>
+              <p className="text-sm font-semibold">Chidori Anime</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 Stream anime in HD · Sub & Dub · No ads on us
               </p>
