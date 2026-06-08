@@ -168,6 +168,8 @@ function AnimeDetailsPage() {
           </dl>
         </div>
       </div>
+        </div>
+      </div>
 
       {full?.characters && full.characters.length > 0 && (
         <section className="mt-12">
