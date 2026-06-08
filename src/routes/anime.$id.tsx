@@ -46,24 +46,22 @@ function AnimeDetailsPage() {
   return (
     <Layout>
       <div className="relative -mx-4 mb-8 md:-mx-8">
-        <div className="relative aspect-[21/9] max-h-[420px] w-full overflow-hidden">
-          {info.Cover && (
-            <img
-              src={info.Cover}
-              alt=""
-              referrerPolicy="no-referrer"
-              decoding="async"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/20 to-transparent" />
-        </div>
-      </div>
+        {info.Cover && (
+          <img
+            src={info.Cover}
+            alt=""
+            referrerPolicy="no-referrer"
+            decoding="async"
+            className="pointer-events-none absolute inset-x-0 top-0 h-[520px] w-full object-cover"
+          />
+        )}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-gradient-to-b from-transparent via-background/40 to-background" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-gradient-to-r from-background/80 via-background/20 to-transparent" />
 
-      <div className="grid gap-6 md:grid-cols-[220px_1fr] md:gap-8">
-        <div>
-          <div className="-mt-32 overflow-hidden rounded-md bg-muted shadow-lg md:-mt-48">
+        <div className="relative px-4 pt-56 md:px-8 md:pt-72">
+          <div className="grid gap-6 md:grid-cols-[220px_1fr] md:gap-8">
+            <div>
+              <div className="overflow-hidden rounded-md bg-muted shadow-2xl ring-1 ring-border">
             {info.ImagePath && (
               <img
                 src={info.ImagePath}
