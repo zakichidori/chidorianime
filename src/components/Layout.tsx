@@ -2,6 +2,7 @@ import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { Home, Search, Bookmark, History, Info } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import narutoLogo from "@/assets/naruto-chibi.png";
+import sasukeAsset from "@/assets/sasuke-chibi.png.asset.json";
 
 const navItems = [
   { to: "/", label: "Home", icon: Home },
@@ -21,13 +22,13 @@ function Logo() {
     <Link to="/" className="flex items-center gap-2">
       <img
         src={narutoLogo}
-        alt="Zaki Anime"
+        alt="Chidori Anime"
         width={32}
         height={32}
         className="h-8 w-8 object-contain"
       />
       <span className="whitespace-nowrap text-lg font-bold tracking-tight">
-        Zaki Anime
+        Chidori Anime
       </span>
     </Link>
   );
@@ -62,10 +63,7 @@ export function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-56 border-r border-border bg-sidebar md:flex md:flex-col">
-        <div className="px-5 py-5">
-          <Logo />
-        </div>
-        <nav className="flex flex-col gap-1 px-3">
+        <nav className="flex flex-col gap-1 px-3 pt-5">
           {navItems.map((item) => {
             const active =
               item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
@@ -86,14 +84,20 @@ export function Layout({ children }: { children: ReactNode }) {
             );
           })}
         </nav>
+        <div className="mt-auto flex items-end justify-center px-4 pb-4 pt-6">
+          <img
+            src={sasukeAsset.url}
+            alt="Sasuke"
+            loading="lazy"
+            className="h-44 w-auto object-contain drop-shadow-xl"
+          />
+        </div>
       </aside>
 
       <div className="md:pl-56">
         <header className="sticky top-0 z-20 flex items-center gap-4 border-b border-border bg-background/95 px-4 py-3 backdrop-blur md:px-8">
-          <div className="md:hidden">
-            <Logo />
-          </div>
-          <div className="ml-auto hidden flex-1 md:flex">
+          <Logo />
+          <div className="ml-auto hidden flex-1 justify-end md:flex">
             <NavSearch />
           </div>
         </header>
@@ -116,7 +120,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <footer className="mt-12 border-t border-border bg-sidebar/40 px-4 py-8 md:px-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-sm font-semibold">Zaki Anime</p>
+              <p className="text-sm font-semibold">Chidori Anime</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 Stream anime in HD · Sub & Dub · No ads on us
               </p>

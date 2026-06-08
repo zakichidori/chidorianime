@@ -43,12 +43,24 @@ function AnimeDetailsPage() {
     );
   }
 
+  // Prefer Jikan's high-res images when available — the local API serves small thumbnails.
+  const jikanImgs = full?.jikan?.images;
+  const hdPoster =
+    jikanImgs?.webp?.large_image_url ||
+    jikanImgs?.jpg?.large_image_url ||
+    info.ImagePath;
+  const hdCover =
+    full?.jikan?.trailer?.images?.maximum_image_url ||
+    jikanImgs?.webp?.large_image_url ||
+    jikanImgs?.jpg?.large_image_url ||
+    info.Cover;
+
   return (
     <Layout>
       <div className="relative -mx-4 mb-8 md:-mx-8">
-        {info.Cover && (
+        {hdCover && (
           <img
-            src={info.Cover}
+            src={hdCover}
             alt=""
             referrerPolicy="no-referrer"
             decoding="async"
@@ -62,10 +74,12 @@ function AnimeDetailsPage() {
           <div className="grid gap-6 md:grid-cols-[220px_1fr] md:gap-8">
             <div>
               <div className="overflow-hidden rounded-md bg-muted shadow-2xl ring-1 ring-border">
-            {info.ImagePath && (
+            {hdPoster && (
               <img
-                src={info.ImagePath}
+                src={hdPoster}
                 alt={info.Name}
+                referrerPolicy="no-referrer"
+                decoding="async"
                 className="aspect-[2/3] w-full object-cover"
               />
             )}
