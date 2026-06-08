@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { Hero } from "@/components/Hero";
 import { Row } from "@/components/Row";
 import { ContinueWatching } from "@/components/ContinueWatching";
-import { findByGenre, findByRating, getAnimeInfo, getLastId } from "@/lib/anime";
+import { findByGenre, findByRating, getAnimeInfo, getFullDetails, getLastId } from "@/lib/anime";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,7 +23,17 @@ function Index() {
       const top = await findByRating(1);
       const first = top.AniData?.[0];
       if (!first?._id) return null;
-      return getAnimeInfo(first._id);
+      const [info, full] = await Promise.all([
+        getAnimeInfo(first._id),
+        getFullDetails(first._id).catch(() => null),
+      ]);
+      const j = full?.jikan;
+      const hdCover =
+        j?.trailer?.images?.maximum_image_url ||
+        j?.images?.webp?.large_image_url ||
+        j?.images?.jpg?.large_image_url ||
+        info.Cover;
+      return { ...info, Cover: hdCover };
     },
     staleTime: 30 * 60_000,
   });
