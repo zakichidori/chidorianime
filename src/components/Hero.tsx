@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Play, Star } from "lucide-react";
+import { Play, Plus, Star } from "lucide-react";
 import type { AnimeInfo } from "@/lib/anime";
 
 export function Hero({ anime }: { anime: AnimeInfo }) {
   return (
-    <div className="relative mb-10 -mx-4 overflow-hidden md:-mx-8 md:rounded-lg">
-      <div className="relative aspect-[16/9] max-h-[480px] w-full md:aspect-[21/9]">
+    <div className="relative -mx-4 -mt-20 mb-10 overflow-hidden md:-mx-10">
+      <div className="relative h-[85vh] min-h-[520px] w-full">
         {anime.Cover && (
           <img
             src={anime.Cover}
@@ -15,38 +15,38 @@ export function Hero({ anime }: { anime: AnimeInfo }) {
             className="absolute inset-0 h-full w-full object-cover"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/40 to-transparent" />
-        <div className="relative z-10 flex h-full flex-col justify-end p-6 md:p-10">
-          <div className="max-w-xl">
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent" />
+        <div className="relative z-10 flex h-full flex-col justify-end px-4 pb-16 md:px-12 md:pb-24">
+          <div className="max-w-2xl">
             {anime.MALScore && (
-              <div className="mb-2 flex items-center gap-1.5 text-sm text-muted-foreground">
+              <div className="mb-3 flex items-center gap-2 text-sm text-foreground/80">
                 <Star className="h-4 w-4 fill-primary text-primary" />
                 <span className="font-medium text-foreground">{anime.MALScore}</span>
                 {anime.Status && <span>· {anime.Status}</span>}
                 {anime.epCount && <span>· {anime.epCount} eps</span>}
               </div>
             )}
-            <h1 className="mb-2 text-3xl font-bold tracking-tight md:text-5xl">
+            <h1 className="mb-4 text-4xl font-extrabold tracking-tight drop-shadow-[0_4px_20px_oklch(0_0_0/0.8)] md:text-6xl lg:text-7xl">
               {anime.Name}
             </h1>
-            <p className="mb-4 line-clamp-3 text-sm text-muted-foreground md:text-base">
+            <p className="mb-6 line-clamp-3 max-w-xl text-base text-foreground/80 drop-shadow md:text-lg">
               {anime.DescripTion}
             </p>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <Link
                 to="/watch/$id/$ep"
                 params={{ id: String(anime._id), ep: "1" }}
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90"
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-7 py-3 text-base font-bold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:scale-105 hover:brightness-110"
               >
-                <Play className="h-4 w-4 fill-current" /> Watch
+                <Play className="h-5 w-5 fill-current" /> Play
               </Link>
               <Link
                 to="/anime/$id"
                 params={{ id: String(anime._id) }}
-                className="inline-flex items-center rounded-md border border-border bg-secondary px-5 py-2.5 text-sm font-medium hover:bg-secondary/70"
+                className="inline-flex items-center gap-2 rounded-md border border-border bg-secondary/70 px-7 py-3 text-base font-semibold backdrop-blur transition hover:bg-secondary"
               >
-                Details
+                <Plus className="h-5 w-5" /> More Info
               </Link>
             </div>
           </div>
