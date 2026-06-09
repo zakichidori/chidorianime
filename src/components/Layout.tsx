@@ -106,7 +106,7 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <div className="pt-16">
+      <div>
         <main className="pb-24 md:pb-10">{children}</main>
 
         <footer className="mt-12 border-t border-border bg-sidebar/60 px-4 py-10 md:px-10">
