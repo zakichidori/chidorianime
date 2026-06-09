@@ -107,7 +107,7 @@ export function Layout({ children }: { children: ReactNode }) {
       </header>
 
       <div>
-        <main className="pb-24 md:pb-10">{children}</main>
+        <main className="px-4 pb-24 pt-20 md:px-10 md:pb-10">{children}</main>
 
         <footer className="mt-12 border-t border-border bg-sidebar/60 px-4 py-10 md:px-10">
           <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-4">

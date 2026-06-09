@@ -26,7 +26,7 @@ export function Row({
   };
 
   return (
-    <section className="group/row mb-10 px-4 md:px-10">
+    <section className="group/row mb-10">
       <h2 className="mb-3 text-xl font-bold tracking-tight md:text-2xl">{title}</h2>
       <div className="relative">
         <button

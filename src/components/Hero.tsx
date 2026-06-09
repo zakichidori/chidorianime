@@ -4,7 +4,7 @@ import type { AnimeInfo } from "@/lib/anime";
 
 export function Hero({ anime }: { anime: AnimeInfo }) {
   return (
-    <div className="relative -mt-16 mb-10 overflow-hidden">
+    <div className="relative -mx-4 -mt-20 mb-10 overflow-hidden md:-mx-10">
       <div className="relative h-[85vh] min-h-[520px] w-full">
         {anime.Cover && (
           <img
